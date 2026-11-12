@@ -71,10 +71,11 @@ def init_schema(conn) -> None:
 
 def kpis(conn) -> dict:
     """Headline grid numbers, computed in one pass with FILTER clauses."""
-    avg15, peak60, readings15, stations = conn.execute("""
+    avg15, peak60, readings15, readings60, stations = conn.execute("""
         SELECT avg(load_mw)   FILTER (WHERE ts > now() - INTERVAL '15 minutes'),
                max(load_mw)   FILTER (WHERE ts > now() - INTERVAL '1 hour'),
                count(*)       FILTER (WHERE ts > now() - INTERVAL '15 minutes'),
+               count(*)       FILTER (WHERE ts > now() - INTERVAL '1 hour'),
                count(DISTINCT substation_id)
                               FILTER (WHERE ts > now() - INTERVAL '15 minutes')
         FROM grid_readings
@@ -83,6 +84,7 @@ def kpis(conn) -> dict:
         "avg_load": float(avg15 or 0.0),
         "peak": float(peak60 or 0.0),
         "readings": readings15,
+        "readings_hour": readings60,
         "stations": stations,
     }
 

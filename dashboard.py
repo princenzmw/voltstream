@@ -59,11 +59,12 @@ with get_connection() as conn:
     voltages = voltage_trend(conn)
     latest = latest_readings(conn)
 
-c1, c2, c3, c4 = st.columns(4)
+c1, c2, c3, c4, c5 = st.columns(5)
 c1.metric("Avg load · last 15 min", f"{k['avg_load']:,.1f} MW")
 c2.metric("Peak load · last hour", f"{k['peak']:,.1f} MW")
 c3.metric("Readings · last 15 min", f"{k['readings']:,}")
-c4.metric("Stations reporting", f"{k['stations']} of {len(SUBSTATIONS)}")
+c4.metric("Readings · last hour", f"{k['readings_hour']:,}")
+c5.metric("Stations reporting", f"{k['stations']} of {len(SUBSTATIONS)}")
 
 st.caption(f"Live view · updated {now_label()}")
 
