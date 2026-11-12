@@ -73,6 +73,22 @@ if you prefer to run them by hand in Tiger Console's SQL Editor.
 To reset the data and start over: `TRUNCATE grid_readings;` then restart the
 simulator for a fresh backfill.
 
+## Expense tracker CLI
+
+The repository also includes a small standalone CSV-backed expense tracker:
+
+```bash
+python expense_tracker.py
+```
+
+Use the menu to add expenses, list saved expenses, or view totals grouped by
+category. Expenses are stored in `expenses.csv` by default; pass a different
+CSV path as the first argument when needed:
+
+```bash
+python expense_tracker.py household-expenses.csv
+```
+
 ## Tech stack
 
 | Layer            | Tool                              |
