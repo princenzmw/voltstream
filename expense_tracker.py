@@ -6,7 +6,7 @@ from collections import defaultdict
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
-from typing import Callable, TextIO
+from typing import Callable
 
 CSV_HEADERS = ("date", "description", "category", "amount")
 
