@@ -1,5 +1,7 @@
 # VoltStream
 
+[![VoltStream CI](https://img.shields.io/github/actions/workflow/status/princenzmw/voltstream/ci.yml?branch=main&style=flat-square&label=CI&logo=githubactions&logoColor=white)](https://github.com/princenzmw/voltstream/actions/workflows/ci.yml)
+
 Real-time power-grid telemetry on Tiger Data. A Python simulator streams load and voltage readings from four substations into a TimescaleDB hypertable on Tiger Cloud, and a Streamlit dashboard renders grid KPIs, per-minute load, per-substation rollups, and voltage trends as readings land.
 
 Built for MLH Global Hack Week: Builders Week.
@@ -48,18 +50,12 @@ streamlit run dashboard.py # terminal 2: opens http://localhost:8501
 
 To reset the data and start over, run `TRUNCATE grid_readings;` and restart the simulator for a fresh backfill.
 
-## Expense tracker CLI
-
-The repository also includes a standalone CSV-backed expense tracker:
+## Running tests
 
 ```bash
-python expense_tracker.py
-```
-
-Use the menu to add expenses, list saved expenses, or view totals grouped by category. Expenses are stored in `expenses.csv` by default; pass a different CSV path as the first argument when needed:
-
-```bash
-python expense_tracker.py household-expenses.csv
+pip install -r requirements.txt -r requirements-dev.txt
+ruff check .
+pytest -v
 ```
 
 ## Tech stack

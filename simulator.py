@@ -8,7 +8,7 @@ Ctrl+C.
 import math
 import random
 import time
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from catalog import BASE_LOAD_MW, SUBSTATIONS
 from db import get_connection, init_schema
@@ -54,7 +54,7 @@ def traffic_at(step: int, walk: float) -> float:
 
 def backfill(conn) -> int:
     """Fill the last six hours with history at 10-second resolution."""
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     start = now - timedelta(hours=BACKFILL_HOURS)
     rows, walk, step = [], 0.0, 0
     ts = start
@@ -87,7 +87,7 @@ def main():
             while True:
                 walk = traffic_at(step, walk)
                 step += 1
-                beat = make_readings(datetime.now(timezone.utc), step, walk)
+                beat = make_readings(datetime.now(UTC), step, walk)
                 with conn.cursor() as cur:
                     cur.executemany(INSERT_SQL, beat)
                 sent += len(beat)

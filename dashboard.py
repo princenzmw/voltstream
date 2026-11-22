@@ -4,8 +4,8 @@ Renders live KPIs and charts from a Tiger Cloud hypertable, refreshing on
 a timer. Run with: streamlit run dashboard.py
 """
 import time
-from datetime import datetime, timezone
-from zoneinfo import ZoneInfo
+from datetime import UTC, datetime
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import plotly.express as px
 import streamlit as st
@@ -37,16 +37,16 @@ st.sidebar.caption("Python · psycopg 3 · Streamlit · Plotly")
 def now_label() -> str:
     try:
         return datetime.now(ZoneInfo("Africa/Nairobi")).strftime("%H:%M:%S")
-    except Exception:
-        return datetime.now(timezone.utc).strftime("%H:%M:%S UTC")
+    except ZoneInfoNotFoundError:
+        return datetime.now(UTC).strftime("%H:%M:%S UTC")
 
 
 def styled(fig, height: int = 320):
     fig.update_layout(
         template="plotly_dark",
-        margin=dict(l=10, r=10, t=28, b=10),
+        margin={"l": 10, "r": 10, "t": 28, "b": 10},
         height=height,
-        legend=dict(orientation="h", y=-0.2),
+        legend={"orientation": "h", "y": -0.2},
     )
     return fig
 

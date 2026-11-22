@@ -14,18 +14,21 @@ from catalog import SUBSTATIONS
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-if not DATABASE_URL:
-    raise RuntimeError(
-        "DATABASE_URL is not set. Copy .env.example to .env and paste the "
-        "connection string from your Tiger Cloud service config."
-    )
+
+def _database_url() -> str:
+    url = os.getenv("DATABASE_URL")
+    if not url:
+        raise RuntimeError(
+            "DATABASE_URL is not set. Copy .env.example to .env and paste the "
+            "connection string from your Tiger Cloud service config."
+        )
+    return url
 
 
 @contextmanager
 def get_connection():
     """Open a short-lived connection to the Tiger Cloud service."""
-    with psycopg.connect(DATABASE_URL, autocommit=True) as conn:
+    with psycopg.connect(_database_url(), autocommit=True) as conn:
         yield conn
 
 
